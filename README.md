@@ -30,8 +30,9 @@ This project is a full-stack web application for product management and price op
 
 1. **Set up environment:**
    ```sh
-   cd pricing_tool_backend
-   python -m venv .venv
+   git clone https://github.com/niteesh6024/pricing_tool.git
+   cd pricing_tool/pricing_tool_backend
+   python3 -m venv .venv
    source .venv/bin/activate
    pip install -r requirements.txt
    ```
