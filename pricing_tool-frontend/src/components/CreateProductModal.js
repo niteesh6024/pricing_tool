@@ -1,12 +1,13 @@
 // src/components/CreateProductModal.jsx
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { createProduct, putProduct } from "../api/Products";
 import { useEffect } from "react";
 import { useAuth } from '../auth/AuthContext';
 
 const CreateProductModal = ({ show, onClose, categories, onProductCreated, mode, product }) => {
-  const userid = sessionStorage.getItem("userid") || "";
+  // const userid = sessionStorage.getItem("userid") || "";
   const authContext = useAuth();
+  const userid = useAuth().userid || "";
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -60,7 +61,8 @@ const CreateProductModal = ({ show, onClose, categories, onProductCreated, mode,
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = sessionStorage.getItem("access_token");
+      // const token = sessionStorage.getItem("access_token");
+      const token = authContext.token || "";
       if (mode === "create") {
         await createProduct(token, formData);}
       else if (mode === "update") {

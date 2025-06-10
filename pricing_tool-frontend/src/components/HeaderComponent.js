@@ -4,10 +4,11 @@ import { useAuth } from '../auth/AuthContext';
 import "../css/Login.css";
 
 export default function HeaderComponent() {
-    const isAuthenticated = sessionStorage.getItem("isAuthenticated") === "true";
-    const username = sessionStorage.getItem("username");
-
     const authContext =useAuth()
+    // const isAuthenticated = sessionStorage.getItem("isAuthenticated") === "true";
+    // const username = sessionStorage.getItem("username");
+    const isAuthenticated = authContext.isAuthenticated;
+    const username = authContext.username || "";
 
     async function logout(){
         await authContext.logout()
