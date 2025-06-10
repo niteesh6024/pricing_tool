@@ -14,11 +14,11 @@ export default function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedAuth = localStorage.getItem("isAuthenticated") === "true";
-    const storedUsername = localStorage.getItem("username");
-    const storedToken = localStorage.getItem("access_token");
-    const storedrole = localStorage.getItem("role");
-    const storedUserid = localStorage.getItem("userid");
+    const storedAuth = sessionStorage.getItem("isAuthenticated") === "true";
+    const storedUsername = sessionStorage.getItem("username");
+    const storedToken = sessionStorage.getItem("access_token");
+    const storedrole = sessionStorage.getItem("role");
+    const storedUserid = sessionStorage.getItem("userid");
     setIsAuthenticated(storedAuth || false)
     setUsername(storedUsername || "");
     setToken(storedToken || "");
@@ -31,16 +31,16 @@ export default function AuthProvider({ children }) {
     try {
       const res = await authenticateUser(username, password);
       if(res.status===200){
-        localStorage.setItem("access_token", res.data.access);
-        localStorage.setItem("refresh_token", res.data.refresh);
-        localStorage.setItem("isAuthenticated", "true");
-        localStorage.setItem("username", username);
+        sessionStorage.setItem("access_token", res.data.access);
+        sessionStorage.setItem("refresh_token", res.data.refresh);
+        sessionStorage.setItem("isAuthenticated", "true");
+        sessionStorage.setItem("username", username);
 
         const decoded = jwtDecode(res.data.access);
         const userRole = decoded.role || role;
         const userId = decoded.user_id;
-        localStorage.setItem("role", userRole);
-        localStorage.setItem("userid", userId);
+        sessionStorage.setItem("role", userRole);
+        sessionStorage.setItem("userid", userId);
 
         setIsAuthenticated(true);
         setUsername(username);
@@ -63,7 +63,7 @@ export default function AuthProvider({ children }) {
   }
 
   async function refreshAccessToken() {
-    const refresh_token = localStorage.getItem("refresh_token");
+    const refresh_token = sessionStorage.getItem("refresh_token");
     if (!refresh_token) {
       await logout();
       return null;
@@ -71,7 +71,7 @@ export default function AuthProvider({ children }) {
     try {
       const res = await refreshToken(refresh_token);
       if (res.status === 200 && res.data.access) {
-        localStorage.setItem("access_token", res.data.access);
+        sessionStorage.setItem("access_token", res.data.access);
         setToken(res.data.access);
         return res.data.access;
       } else {
@@ -89,7 +89,7 @@ export default function AuthProvider({ children }) {
     setUsername("");
     setRole('');
     setUserid("");
-    localStorage.clear();
+    sessionStorage.clear();
     window.location.href = "/login";
   }
 

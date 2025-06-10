@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useAuth } from '../auth/AuthContext';
 
 const CreateProductModal = ({ show, onClose, categories, onProductCreated, mode, product }) => {
-  const userid = localStorage.getItem("userid") || "";
+  const userid = sessionStorage.getItem("userid") || "";
   const authContext = useAuth();
   const [formData, setFormData] = useState({
     name: "",
@@ -60,7 +60,7 @@ const CreateProductModal = ({ show, onClose, categories, onProductCreated, mode,
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("access_token");
+      const token = sessionStorage.getItem("access_token");
       if (mode === "create") {
         await createProduct(token, formData);}
       else if (mode === "update") {

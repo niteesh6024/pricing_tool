@@ -4,8 +4,8 @@ import { useAuth } from '../auth/AuthContext';
 import "../css/Login.css";
 
 export default function HeaderComponent() {
-    const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
-    const username = localStorage.getItem("username");
+    const isAuthenticated = sessionStorage.getItem("isAuthenticated") === "true";
+    const username = sessionStorage.getItem("username");
 
     const authContext =useAuth()
 

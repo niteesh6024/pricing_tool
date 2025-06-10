@@ -18,7 +18,7 @@ export default function PriceOptimization() {
 
   const fetchProducts = async (category = "", search = "") => {
     try {
-      const token = localStorage.getItem("access_token");
+      const token = sessionStorage.getItem("access_token");
       const params = {};
       if (category) params.category = category;
       if (search) params.search = search;
@@ -43,7 +43,7 @@ export default function PriceOptimization() {
 
   const fetchCategories = async () => {
   try {
-    const token = localStorage.getItem("access_token");
+    const token = sessionStorage.getItem("access_token");
     const response = await getCategories(token);
     setCategories(response.data);
   } catch (error) {

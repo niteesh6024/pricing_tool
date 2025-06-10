@@ -13,7 +13,7 @@ export default function ManageProducts() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [toggleValue, setToggleValue] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
-  const user_id = localStorage.getItem("userid") || "";
+  const user_id = sessionStorage.getItem("userid") || "";
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState("view");
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -31,7 +31,7 @@ export default function ManageProducts() {
 
   const fetchProducts = async (category = "", search = "") => {
     try {
-      const token = localStorage.getItem("access_token");
+      const token = sessionStorage.getItem("access_token");
       const params = {};
       if (category) params.category = category;
       if (search) params.search = search;
@@ -58,7 +58,7 @@ export default function ManageProducts() {
 
   const removeProduct = async (productId) => {
     try {
-      const token = localStorage.getItem("access_token");
+      const token = sessionStorage.getItem("access_token");
       await deleteProduct(token, productId);
       setSelectedRows([])
       fetchProducts();
@@ -79,7 +79,7 @@ export default function ManageProducts() {
 
   const fetchCategories = async () => {
     try {
-      const token = localStorage.getItem("access_token");
+      const token = sessionStorage.getItem("access_token");
       const response = await getCategories(token);
       setCategories(response.data);
     } catch (error) {

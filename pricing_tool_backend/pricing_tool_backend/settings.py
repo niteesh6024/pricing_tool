@@ -140,11 +140,12 @@ REST_FRAMEWORK = {
     ),
 }
 
+# Custom user model
 AUTH_USER_MODEL = 'products.CustomUser'
 
-
+# jwt settings
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(hours=12), 
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=25),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
