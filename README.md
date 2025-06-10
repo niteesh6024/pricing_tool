@@ -9,7 +9,7 @@ This project is a full-stack web application for product management and price op
 ## Features
 
 - **User Authentication:** JWT-based login/register with roles (admin, seller, buyer).
-- **Product Management:** Sellers and admins can create, update, view, and delete products.
+- **Product Management:** Sellers can create. Admin/seller can update, view, and delete products.
 - **Category Management:** Products are organized by categories. Managed by admins
 - **Demand Forecasting:** Visualize demand forecasts and selling prices with charts.
 - **Optimized Pricing:** Can see the optiimized price to the selling price
@@ -39,9 +39,9 @@ This project is a full-stack web application for product management and price op
 
 2. **Configure the database:**
     - Spin up postgress db with these details
-        POSTGRES_DB=pricing_tool
-        POSTGRES_USER=pricing_user
-        POSTGRES_PASSWORD=pricing_tool
+        POSTGRES_DB=pricing_tool,
+        POSTGRES_USER=pricing_user,
+        POSTGRES_PASSWORD=pricing_tool,
         PORT=5432
    - You can simply spin up docker container 
     ```sh
@@ -129,7 +129,7 @@ This project is a full-stack web application for product management and price op
 
 ## Assignment Outcomes
 
-- Implement secure, role-based authentication and authorization.
+- Implemented secure, role-based authentication and authorization.
 - Allow sellers/admins to manage products and categories.
 - Provide demand forecasting and price optimization features.
 - Integrate an AI summarizer for product analytics.
