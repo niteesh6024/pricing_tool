@@ -16,4 +16,9 @@ export  const registerUser
                 password: password,
                 role: role
         }
-)       
+)
+
+export const refreshToken = (refreshToken) =>
+  apiClient.post(`/api/token/refresh/`, {
+    refresh: refreshToken
+  });

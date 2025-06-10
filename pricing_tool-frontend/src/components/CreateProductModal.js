@@ -2,9 +2,11 @@
 import React, { useState } from "react";
 import { createProduct, putProduct } from "../api/Products";
 import { useEffect } from "react";
+import { useAuth } from '../auth/AuthContext';
 
 const CreateProductModal = ({ show, onClose, categories, onProductCreated, mode, product }) => {
   const userid = localStorage.getItem("userid") || "";
+  const authContext = useAuth();
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -67,9 +69,24 @@ const CreateProductModal = ({ show, onClose, categories, onProductCreated, mode,
       onProductCreated();
       resetFormData();
       onClose();
-    } catch (err) {
-      console.error("Failed to create product:", err);
-      alert("Failed to create product. Check the form.");
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        console.log("Token expired, refreshing...");
+        const newToken = await authContext.refreshAccessToken();
+        if (newToken) {
+          if (mode === "create") {
+            await createProduct(newToken, formData);
+          } else if (mode === "update") {
+            await putProduct(newToken, product.id, formData);
+          }
+          onProductCreated();
+          resetFormData();
+          onClose();
+        }
+      } else {
+        console.error("Failed to create product:", error);
+        alert("Failed to create product. Check the form.");
+      }
     }
   };
 

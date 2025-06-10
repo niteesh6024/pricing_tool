@@ -33,10 +33,19 @@ const DemandForecast = ({ show, onClose, products }) => {
         try {
           const response = await summaryProducts(token, context);
           setSummary(response.data.summary);
-          console.log("Summary fetched:", response.data.summary);
+          // console.log("Summary fetched:", response.data.summary);
         } catch (error) {
-          console.error("Error fetching summary:", error);
-          setSummary("Unable to fetch summary.");
+          if (error.response && error.response.status === 401) {
+            console.log("Token expired, refreshing...");
+            const newToken = await authContext.refreshAccessToken();
+            if (newToken) {
+              const retryResponse = await summaryProducts(newToken, context);
+              setSummary(retryResponse.data.summary);
+            }
+          } else {
+            console.error("Error fetching summary:", error);
+            setSummary("Unable to fetch summary.");
+          }
         }
       }
     };

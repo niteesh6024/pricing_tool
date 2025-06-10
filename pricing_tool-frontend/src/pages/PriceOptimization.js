@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { getPoducts } from "../api/Products";
 import { getCategories } from "../api/Categories";
 import SecondaryNavBar from "../components/SecondaryNavBar";
+import { useAuth } from '../auth/AuthContext';
 
 export default function PriceOptimization() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  const authContext = useAuth();
 
   useEffect(() => {
     fetchProducts();
@@ -23,8 +25,20 @@ export default function PriceOptimization() {
       const response = await getPoducts(token, params);
       setProducts(response.data);
     } catch (error) {
-      console.error("Error fetching products:", error);
-    }
+          if (error.response && error.response.status === 401) {
+            console.log("Token expired, refreshing...");
+            const newToken = await authContext.refreshAccessToken();
+            if (newToken) {
+              const params = {};
+              if (category) params.category = category;
+              if (search) params.search = search;
+              const retryResponse = await getPoducts(newToken, params);
+              setProducts(retryResponse.data);
+            }
+          } else{
+            console.error("Error fetching products:", error);
+          }
+        }
   };
 
   const fetchCategories = async () => {
@@ -33,8 +47,17 @@ export default function PriceOptimization() {
     const response = await getCategories(token);
     setCategories(response.data);
   } catch (error) {
-    console.error("Error fetching categories:", error);
-  }
+      if (error.response && error.response.status === 401) {
+        console.log("Token expired, refreshing...");
+        const newToken = await authContext.refreshAccessToken();
+        if (newToken) {
+          const retryResponse = await getCategories(newToken);
+          setCategories(retryResponse.data);
+        }
+      } else {
+        console.error("Error fetching categories:", error);
+      }
+    }
 };
 
 

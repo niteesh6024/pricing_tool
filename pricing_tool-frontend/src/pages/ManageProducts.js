@@ -39,7 +39,20 @@ export default function ManageProducts() {
       setProducts(response.data);
       setSelectedRows([])
     } catch (error) {
-      console.error("Error fetching products:", error);
+      if (error.response && error.response.status === 401) {
+        console.log("Token expired, refreshing...");
+        const newToken = await authContext.refreshAccessToken();
+        if (newToken) {
+          const params = {};
+          if (category) params.category = category;
+          if (search) params.search = search;
+          const retryResponse = await getPoducts(newToken, params);
+          setProducts(retryResponse.data);
+          setSelectedRows([])
+        }
+      } else{
+        console.error("Error fetching products:", error);
+      }
     }
   };
 
@@ -50,7 +63,16 @@ export default function ManageProducts() {
       setSelectedRows([])
       fetchProducts();
     } catch (error) {
+      if (error.response && error.response.status === 401) {
+        const newToken = await authContext.refreshAccessToken();
+        if (newToken) {
+          await deleteProduct(newToken, productId);
+          setSelectedRows([]);
+          fetchProducts();
+        }
+      } else {
       console.error("Error fetching categories:", error);
+      }
     }
   };
 
@@ -61,7 +83,16 @@ export default function ManageProducts() {
       const response = await getCategories(token);
       setCategories(response.data);
     } catch (error) {
-      console.error("Error fetching categories:", error);
+      if (error.response && error.response.status === 401) {
+        console.log("Token expired, refreshing...");
+        const newToken = await authContext.refreshAccessToken();
+        if (newToken) {
+          const retryResponse = await getCategories(newToken);
+          setCategories(retryResponse.data);
+        }
+      } else {
+        console.error("Error fetching categories:", error);
+      }
     }
   };
 

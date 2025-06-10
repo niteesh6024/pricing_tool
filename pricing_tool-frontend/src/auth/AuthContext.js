@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, useContext} from "react";
-import { authenticateUser } from "../api/User";
+import { authenticateUser, refreshToken } from "../api/User";
 import { jwtDecode } from "jwt-decode";
 
 export const AuthContext = createContext();
@@ -62,6 +62,28 @@ export default function AuthProvider({ children }) {
     return true;
   }
 
+  async function refreshAccessToken() {
+    const refresh_token = localStorage.getItem("refresh_token");
+    if (!refresh_token) {
+      await logout();
+      return null;
+    }
+    try {
+      const res = await refreshToken(refresh_token);
+      if (res.status === 200 && res.data.access) {
+        localStorage.setItem("access_token", res.data.access);
+        setToken(res.data.access);
+        return res.data.access;
+      } else {
+        await logout();
+        return null;
+      }
+    } catch (err) {
+      await logout();
+      return null;
+    }
+  }
+
   async function logout(){
     setIsAuthenticated(false);
     setUsername("");
@@ -72,7 +94,7 @@ export default function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, token, username, role, userid, login, logout, loading }}>
+    <AuthContext.Provider value={{ isAuthenticated, token, username, role, userid, login, logout, refreshAccessToken, loading }}>
       {children}
     </AuthContext.Provider>
   );

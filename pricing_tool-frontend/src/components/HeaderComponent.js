@@ -8,7 +8,6 @@ export default function HeaderComponent() {
     const username = localStorage.getItem("username");
 
     const authContext =useAuth()
-    console.log("authContext", authContext)
 
     async function logout(){
         await authContext.logout()
