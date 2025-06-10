@@ -18,9 +18,6 @@ const Login = () => {
         navigate(`/welcome`)
             
     }
-    else{
-        alert("Login failed! Please check your credentials.");
-    }
     setFormData({ username: "", password: "" }); // Reset form data after submission
   };
 

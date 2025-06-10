@@ -88,6 +88,16 @@ This project is a full-stack web application for product management and price op
 
 ## Configuration
 
+- **Email verification:**  
+  After creating an account, you will receive an email to activate your account. By default, email sending is disabled for simplicity—the verification URL will be logged in the backend console.  
+  To verify your account, copy the URL from the console and open it in your browser or send a GET request to it.
+
+  To enable real email sending, update these settings in `settings.py`:
+  ```python
+  EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+  EMAIL_HOST_USER = "your_email@example.com"
+  EMAIL_HOST_PASSWORD = 'your_password'
+
 - **Enable/Disable Summarizer:**  
   In `pricing_tool_backend/settings.py`, set:
   ```python

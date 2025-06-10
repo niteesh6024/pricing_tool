@@ -110,6 +110,7 @@ export default function ManageProducts() {
           <table className="table table-bordered table-striped w-100">
             <thead className="table-dark">
               <tr>
+                { role !== 'buyer' && (
                 <th>
                   {/* Master checkbox for select all */}
                   <input
@@ -126,7 +127,7 @@ export default function ManageProducts() {
                       }
                     }}
                   />
-                </th>
+                </th>)}
                 {/* <th>Id</th> */}
                 <th>Name</th>
                 <th>Category</th>
@@ -150,6 +151,7 @@ export default function ManageProducts() {
                       backgroundColor: isSelected(product) ? "#d1e7fd" : "inherit",
                     }}
                   >
+                    { role !== 'buyer' && (
                     <td>
                       <input
                         type="checkbox"
@@ -165,7 +167,7 @@ export default function ManageProducts() {
                         }}
                         onClick={(e) => e.stopPropagation()}
                       />
-                    </td>
+                    </td> )}
                     {/* <td>{product.id}</td> */}
                     <td>{product.name}</td>
                     <td>{product.category_detail.name}</td>

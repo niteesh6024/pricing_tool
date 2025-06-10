@@ -55,7 +55,7 @@ export default function AuthProvider({ children }) {
       }
     } 
     catch (err) {
-      alert("Invalid credentials");
+      alert("Login failed! Please check your credentials.");
       await logout();
       return false; 
     }

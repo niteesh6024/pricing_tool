@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'products',
+    'rest_framework',
     'rest_framework_simplejwt',
 ]
 
@@ -156,8 +157,8 @@ SIMPLE_JWT = {
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = "boddapuniteesh@gmail.com"
-EMAIL_HOST_PASSWORD = 'ltdj oosj fdme kxxc'
+EMAIL_HOST_USER = "xxxx"
+EMAIL_HOST_PASSWORD = 'xxxx'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_USE_TLS = True
 
