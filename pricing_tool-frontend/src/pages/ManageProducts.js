@@ -130,6 +130,8 @@ export default function ManageProducts() {
         setSelectedCategory={setSelectedCategory}
         categories={categories}
         onSearch={fetchProducts}
+        categorysearch={fetchCategories}
+        showAddCategory={role === 'admin'}
         showAddProduct={role === 'seller'}
         showDemandForecast={role !== 'buyer'}
         showToggle={role !== 'buyer'}
@@ -156,7 +158,7 @@ export default function ManageProducts() {
                     }
                     onChange={(e) => {
                       if (e.target.checked) {
-                        setSelectedRows(products); // select all products (full objects)
+                        setSelectedRows(products);
                       } else {
                         setSelectedRows([]);
                       }

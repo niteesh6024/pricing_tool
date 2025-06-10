@@ -145,7 +145,7 @@ AUTH_USER_MODEL = 'products.CustomUser'
 
 # jwt settings
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=25),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
@@ -163,9 +163,10 @@ EMAIL_HOST_PASSWORD = 'xxxx'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_USE_TLS = True
 
-
+# CORS settings
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
 
+# Enable/Disable Summarizer
 ENABLE_SUMMARIZER = False

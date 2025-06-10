@@ -8,3 +8,13 @@ export  const getCategories
                 },
         }
 )
+
+export  const createCategory =
+(token, categoryData) => apiClient.post(`/api/categories/`,
+        categoryData,
+        {
+                headers: {
+                        Authorization: `Bearer ${token}`,
+                },
+        }
+)

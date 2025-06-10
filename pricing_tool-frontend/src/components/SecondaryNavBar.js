@@ -3,6 +3,7 @@ import { useState } from "react";
 // import CreateProduct from "./CreateProduct";
 import DemandForecast from "./DemandForecast";
 import CreateProductModal from "./CreateProductModal";
+import CreateCategoryModal from "./CreateCategoryModal";
 
 const SecondaryNavBar = ({
   title,
@@ -12,7 +13,9 @@ const SecondaryNavBar = ({
   setSelectedCategory,
   categories = [],
   onSearch,
+  categorysearch,
   showAddProduct = false,
+  showAddCategory = false,
   showDemandForecast = false,
   showToggle = false,
   toggleValue,
@@ -22,6 +25,7 @@ const SecondaryNavBar = ({
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [showForcast, setShowForcast] = useState(false);
+  const [showCategoryModal, setShowCategoryModal] = useState(false);
 
   return (
     <div className="navbar navbar-expand-lg navbar-light bg-light border-bottom px-4 py-2 d-flex justify-content-between align-items-center w-100">
@@ -97,6 +101,14 @@ const SecondaryNavBar = ({
             Add Product
           </button>
         )}
+        {showAddCategory && (
+          <button
+            className="btn btn-primary me-2"
+            onClick={() => setShowCategoryModal(true)}
+          >
+            Add Category
+          </button>
+        )}
         {showDemandForecast && (
           <button
             className="btn btn-secondary"
@@ -113,6 +125,12 @@ const SecondaryNavBar = ({
         categories={categories}
         onProductCreated={onSearch}
         mode="create"
+      />
+
+       <CreateCategoryModal
+        show={showCategoryModal}
+        onClose={() => setShowCategoryModal(false)}
+        onCategoryCreated={categorysearch}
       />
 
        <DemandForecast

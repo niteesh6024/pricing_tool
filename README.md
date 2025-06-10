@@ -108,6 +108,25 @@ This project is a full-stack web application for product management and price op
 
 ---
 
+## Testing
+
+1. **Create an admin account:**  
+   - Register as an admin user.
+   - Check the backend logs for the email verification link and use it to activate your account.
+   - Log in as admin and add some product categories.
+
+2. **Create a seller account:**  
+   - Register as a seller user.
+   - Verify the account using the link from the backend logs.
+   - Log in as seller and add some products under the categories created by the admin.
+
+3. **Test demand forecasting and summarization:**  
+   - Use the toggle button to enable demand forecasting.
+   - Select one or more products to view demand forecast charts and AI-generated summaries.
+
+4. **Test price optimization:**  
+   - Navigate to the "Price Optimization" tab to view optimized price suggestions for your products.
+
 ## Assignment Outcomes
 
 - Implement secure, role-based authentication and authorization.

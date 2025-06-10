@@ -1,5 +1,4 @@
-// src/components/CreateProductModal.jsx
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import { createProduct, putProduct } from "../api/Products";
 import { useEffect } from "react";
 import { useAuth } from '../auth/AuthContext';

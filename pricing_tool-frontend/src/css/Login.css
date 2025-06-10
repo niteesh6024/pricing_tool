@@ -72,11 +72,10 @@ html, body {
   background-color: #0056b3;
 }
 
-/* Add to Login.css */
 .role-row {
   display: flex;
   align-items: center;
-  gap: 2px; /* space between label and select */
+  gap: 2px;
 }
 
 .role-label {

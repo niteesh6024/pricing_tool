@@ -8,6 +8,7 @@ from django.conf import settings
 from transformers import pipeline
 
 if getattr(settings, "ENABLE_SUMMARIZER", False):
+    # Initialize the summarization pipeline using a pre-trained model
     summarizer_pipeline = pipeline("text2text-generation", model="google/flan-t5-base")
 
     def summarize_with_prompt(context):

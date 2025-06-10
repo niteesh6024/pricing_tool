@@ -18,7 +18,7 @@ const Login = () => {
         navigate(`/welcome`)
             
     }
-    setFormData({ username: "", password: "" }); // Reset form data after submission
+    setFormData({ username: "", password: "" });
   };
 
   return (

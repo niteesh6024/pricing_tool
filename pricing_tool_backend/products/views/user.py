@@ -13,6 +13,7 @@ from rest_framework.permissions import IsAuthenticated
 from ..permissions import IsSelfOrAdmin, IsAdmin
 from rest_framework.permissions import AllowAny
 
+# User registration and email verification views
 class RegisterUserView(APIView):
     def post(self, request):
         serializer = RegisterUserSerializer(data=request.data)

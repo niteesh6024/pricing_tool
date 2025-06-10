@@ -22,9 +22,9 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
-    def calculate_demand_forecast(self, days=1):
+    def calculate_demand_forecast(self, days=7):
         """
-        Estimate product demand for the next `days` (default: 30) using:
+        Estimate product demand for the next `days` (default: 7) using:
         - sales rate
         - customer rating
         - optimized price influence

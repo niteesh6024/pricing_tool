@@ -1,5 +1,3 @@
-# products/views/token.py
-
 from rest_framework_simplejwt.views import TokenObtainPairView
 from ..serializers.token import MyTokenObtainPairSerializer
 
