@@ -15,8 +15,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if(await authContext.login(formData.username, formData.password)){
-        navigate(`/welcome`)
-            
+        navigate(`/welcome`)        
     }
     setFormData({ username: "", password: "" });
   };

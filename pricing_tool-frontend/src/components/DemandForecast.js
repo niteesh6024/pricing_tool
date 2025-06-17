@@ -10,16 +10,18 @@ import {
   Title,
 } from "chart.js";
 
-import {summaryProducts} from "../api/Products";
-import React, { useEffect, useState } from "react";
-import { useAuth } from '../auth/AuthContext';
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import useAxiosPrivate from "../api/useAxiosPrivate";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Legend, Tooltip, Title);
 
 const DemandForecast = ({ show, onClose, products }) => {
-  const authContext = useAuth();
-  const token = authContext.token || "";
+
   const [summary, setSummary] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
     const fetchSummary = async () => {
@@ -31,21 +33,15 @@ const DemandForecast = ({ show, onClose, products }) => {
           )
           .join(" ");
         try {
-          const response = await summaryProducts(token, context);
+          const response = await axiosPrivate.post('/api/summarize/', { context });
           setSummary(response.data.summary);
-          // console.log("Summary fetched:", response.data.summary);
+          console.log("Summary fetched:", response.data.summary);
         } catch (error) {
-          if (error.response && error.response.status === 401) {
-            console.log("Token expired, refreshing...");
-            const newToken = await authContext.refreshAccessToken();
-            if (newToken) {
-              const retryResponse = await summaryProducts(newToken, context);
-              setSummary(retryResponse.data.summary);
+            if (error.response && error.response.status === 401) {
+              navigate('/login', { state: { from: location }, replace: true });
+            } else {
+              console.error("Failed to get summary:", error);
             }
-          } else {
-            console.error("Error fetching summary:", error);
-            setSummary("Unable to fetch summary.");
-          }
         }
       }
     };

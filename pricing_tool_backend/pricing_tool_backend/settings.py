@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'products',
     'rest_framework',
     'rest_framework_simplejwt',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -145,8 +146,8 @@ AUTH_USER_MODEL = 'products.CustomUser'
 
 # jwt settings
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=25),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(minutes=3),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
     'ALGORITHM': 'HS256',
@@ -167,6 +168,17 @@ EMAIL_USE_TLS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
+CORS_ALLOW_CREDENTIALS = True 
+CORS_ALLOW_METHODS = [
+    "GET",
+    "POST",
+    "PUT",
+    "PATCH",
+    "DELETE",
+    "OPTIONS",
+]
+
+# CORS_ALLOW_ALL_ORIGINS = True
 
 # Enable/Disable Summarizer
 ENABLE_SUMMARIZER = False

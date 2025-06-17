@@ -1,10 +1,12 @@
-import React, { useState } from "react";
-import { createCategory } from "../api/Categories";
-import { useAuth } from '../auth/AuthContext';
+import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import useAxiosPrivate from "../api/useAxiosPrivate";
 
 const CreateCategoryModal = ({ show, onClose, onCategoryCreated }) => {
-  const authContext = useAuth();
   const [name, setName] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const axiosPrivate = useAxiosPrivate();
 
   const handleChange = (e) => {
     setName(e.target.value);
@@ -13,25 +15,17 @@ const CreateCategoryModal = ({ show, onClose, onCategoryCreated }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = authContext.token || "";
-      await createCategory(token, { name: name });
+      await axiosPrivate.post('/api/categories/', { name: name })
       console.log("Category created successfully");
       onCategoryCreated();
       setName("");
       onClose();
     } catch (error) {
       if (error.response && error.response.status === 401) {
-        console.log("Token expired, refreshing...");
-        const newToken = await authContext.refreshAccessToken();
-        if (newToken) {
-          await createCategory(newToken, { name :  name });
-          onCategoryCreated();
-          setName("");
-          onClose();
-        }
+        navigate('/login', { state: { from: location }, replace: true });
       } else {
-        console.error("Failed to create category:", error);
-        alert("Failed to create category. Check the form.");
+        console.error("Failed to create product:", error);
+        alert("Failed to create product. Check the form.");
       }
     }
   };

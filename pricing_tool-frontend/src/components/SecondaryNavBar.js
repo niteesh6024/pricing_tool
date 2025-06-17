@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-// import CreateProduct from "./CreateProduct";
 import DemandForecast from "./DemandForecast";
 import CreateProductModal from "./CreateProductModal";
 import CreateCategoryModal from "./CreateCategoryModal";
@@ -30,7 +29,6 @@ const SecondaryNavBar = ({
   return (
     <div className="navbar navbar-expand-lg navbar-light bg-light border-bottom px-4 py-2 d-flex justify-content-between align-items-center w-100">
 
-        {/* Back Button */}
         <button
           className="btn btn-outline-secondary me-2"
           onClick={() => navigate(-1)}
@@ -38,7 +36,6 @@ const SecondaryNavBar = ({
           ← Back
         </button>
 
-        {/* Page Title */}
         <h5 className="mb-0 text-center flex-grow-1">{title}</h5>
 
         {showToggle && (

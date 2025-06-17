@@ -5,7 +5,7 @@ from .views.product import ProductViewSet
 from .views.category import CategoryViewSet
 from rest_framework_simplejwt.views import TokenRefreshView
 from .views.user import RegisterUserView, VerifyEmailView, UserViewSet
-from .views.token import MyTokenObtainPairView
+from .views.token import MyTokenObtainPairView, CookieTokenRefreshView
 from .views.summarizer import SummarizeView
 
 router = DefaultRouter()
@@ -18,6 +18,6 @@ urlpatterns = [
     path('register/', RegisterUserView.as_view(), name='register'),
     path('verify-email/', VerifyEmailView.as_view(), name='verify_email'),
     path('login/', MyTokenObtainPairView.as_view(), name='login'),
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('token/refresh/', CookieTokenRefreshView.as_view(), name='token_refresh'),
     path('summarize/', SummarizeView.as_view(), name='summarize'),
 ]

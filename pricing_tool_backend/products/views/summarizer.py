@@ -35,7 +35,8 @@ else:
 class SummarizeView(APIView):
     def post(self, request):
         if not getattr(settings, "ENABLE_SUMMARIZER", False):
-            raise PermissionDenied("Summarizer is disabled by admin.")
+            # raise PermissionDenied("Summarizer is disabled by admin.")
+            return Response({'summary': 'Summarizer is disabled by admin.'}, status=status.HTTP_200_OK)
         context = request.data.get('context')
 
         if not context:

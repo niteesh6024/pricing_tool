@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
@@ -10,13 +9,9 @@ import AuthProvider, { useAuth } from "./auth/AuthContext";
 import { Navigate } from "react-router-dom";
 
 function AuthenticatedRoute({children}){
-    const authContext=useAuth()
+  const {isAuthenticated} = useAuth()
 
-  if (authContext.loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (authContext.isAuthenticated) {
+  if (isAuthenticated) {
     return children;
   } else {
     return <Navigate to="/" />;

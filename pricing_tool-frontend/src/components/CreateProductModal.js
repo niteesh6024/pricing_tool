@@ -1,12 +1,16 @@
-import React, { useState } from "react";
-import { createProduct, putProduct } from "../api/Products";
+import { useState } from "react";
 import { useEffect } from "react";
 import { useAuth } from '../auth/AuthContext';
+import { useNavigate, useLocation } from "react-router-dom";
+import useAxiosPrivate from "../api/useAxiosPrivate";
 
 const CreateProductModal = ({ show, onClose, categories, onProductCreated, mode, product }) => {
-  // const userid = sessionStorage.getItem("userid") || "";
+
   const authContext = useAuth();
-  const userid = useAuth().userid || "";
+  const userid = authContext.userid || "";
+  const navigate = useNavigate();
+  const location = useLocation();
+  const axiosPrivate = useAxiosPrivate();
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -60,30 +64,18 @@ const CreateProductModal = ({ show, onClose, categories, onProductCreated, mode,
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // const token = sessionStorage.getItem("access_token");
-      const token = authContext.token || "";
       if (mode === "create") {
-        await createProduct(token, formData);}
+        await axiosPrivate.post('/api/products/', formData);
+      }
       else if (mode === "update") {
-        await putProduct(token, product.id, formData);
+        await axiosPrivate.put(`/api/products/${product.id}/`, formData);
       }
       onProductCreated();
       resetFormData();
       onClose();
     } catch (error) {
       if (error.response && error.response.status === 401) {
-        console.log("Token expired, refreshing...");
-        const newToken = await authContext.refreshAccessToken();
-        if (newToken) {
-          if (mode === "create") {
-            await createProduct(newToken, formData);
-          } else if (mode === "update") {
-            await putProduct(newToken, product.id, formData);
-          }
-          onProductCreated();
-          resetFormData();
-          onClose();
-        }
+        navigate('/login', { state: { from: location }, replace: true });
       } else {
         console.error("Failed to create product:", error);
         alert("Failed to create product. Check the form.");

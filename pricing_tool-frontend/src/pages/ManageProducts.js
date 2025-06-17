@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { getPoducts, deleteProduct } from "../api/Products";
-import { getCategories } from "../api/Categories";
+import { useEffect, useState } from "react";
 import SecondaryNavBar from "../components/SecondaryNavBar";
 import { useAuth } from '../auth/AuthContext';
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import CreateProductModal from "../components/CreateProductModal";
+import { useNavigate, useLocation } from "react-router-dom";
+import useAxiosPrivate from "../api/useAxiosPrivate";
 
 export default function ManageProducts() {
   const [products, setProducts] = useState([]);
@@ -13,14 +13,16 @@ export default function ManageProducts() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [toggleValue, setToggleValue] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
-  // const user_id = sessionStorage.getItem("userid") || "";
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState("view");
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const authContext = useAuth();
   const role = authContext.role || 'buyer';
   const user_id = authContext.userid || "";
+  const axiosPrivate = useAxiosPrivate();
 
   const isSelected = (product) =>
     selectedRows.some((row) => row.id === product.id);
@@ -32,71 +34,49 @@ export default function ManageProducts() {
 
   const fetchProducts = async (category = "", search = "") => {
     try {
-      // const token = sessionStorage.getItem("access_token");
-      const token = authContext.token || sessionStorage.getItem("access_token");
-      const params = {};
-      if (category) params.category = category;
-      if (search) params.search = search;
-      const response = await getPoducts(token, params);
-      setProducts(response.data);
-      setSelectedRows([])
+        const params = {};
+        if (category) params.category = category;
+        if (search) params.search = search;
+
+        const response = await axiosPrivate.get('/api/products/', { params });
+        setProducts(response.data);
+        setSelectedRows([]);
     } catch (error) {
-      if (error.response && error.response.status === 401) {
-        console.log("Token expired, refreshing...");
-        const newToken = await authContext.refreshAccessToken();
-        if (newToken) {
-          const params = {};
-          if (category) params.category = category;
-          if (search) params.search = search;
-          const retryResponse = await getPoducts(newToken, params);
-          setProducts(retryResponse.data);
-          setSelectedRows([])
+        if (error.response && error.response.status === 401) {
+          navigate('/login', { state: { from: location }, replace: true });
+        } else {
+          console.error("Failed to fetch product:", error);
+          alert("Failed to fetch Products.");
         }
-      } else{
-        console.error("Error fetching products:", error);
-      }
     }
   };
 
   const removeProduct = async (productId) => {
     try {
-      // const token = sessionStorage.getItem("access_token");
-      const token = authContext.token || sessionStorage.getItem("access_token");
-      await deleteProduct(token, productId);
+      await axiosPrivate.delete(`/api/products/${productId}/`);
       setSelectedRows([])
       fetchProducts();
     } catch (error) {
-      if (error.response && error.response.status === 401) {
-        const newToken = await authContext.refreshAccessToken();
-        if (newToken) {
-          await deleteProduct(newToken, productId);
-          setSelectedRows([]);
-          fetchProducts();
+        if (error.response && error.response.status === 401) {
+          navigate('/login', { state: { from: location }, replace: true });
+        } else {
+          console.error("Failed to remove product:", error);
+          alert("Failed to remove Products.");
         }
-      } else {
-      console.error("Error fetching categories:", error);
-      }
     }
   };
 
-
   const fetchCategories = async () => {
     try {
-      // const token = sessionStorage.getItem("access_token");
-      const token = authContext.token || sessionStorage.getItem("access_token");
-      const response = await getCategories(token);
+      const response = await axiosPrivate.get('/api/categories/');
       setCategories(response.data);
     } catch (error) {
-      if (error.response && error.response.status === 401) {
-        console.log("Token expired, refreshing...");
-        const newToken = await authContext.refreshAccessToken();
-        if (newToken) {
-          const retryResponse = await getCategories(newToken);
-          setCategories(retryResponse.data);
+        if (error.response && error.response.status === 401) {
+          navigate('/login', { state: { from: location }, replace: true });
+        } else {
+          console.error("Failed to fetch Categories:", error);
+          alert("Failed to fetch Categories.");
         }
-      } else {
-        console.error("Error fetching categories:", error);
-      }
     }
   };
 
