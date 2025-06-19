@@ -14,7 +14,7 @@ export default function WelcomePage() {
 
   return (
     <div className="container text-center mt-5">
-  <h1 className="mb-4">BCG X</h1>
+  <h1 className="mb-4">Hi, {authContext.username} </h1>
   <h2 className="mb-4">Welcome to the Price Optimization Tool</h2>
 
   <div className="row justify-content-center align-items-stretch">
